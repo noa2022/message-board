@@ -11,3 +11,28 @@ services:
       - ./app:/app
       - /app/node_modules
     command: sh -c "npm install && npm run start"
+
+  api:
+    build: ./docker/api
+    ports:
+      - "8008:8080"
+    volumes:
+      - ./api:/app
+    depends_on:
+      - mysql
+
+  mysql:
+    build: ./docker/mysql
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - 3309:3306
+
+volumes:
+  mysql-data:
+    driver: local
