@@ -56,8 +56,6 @@ const formartDateTime = (date) => {
   return `${year}年${month}月${day}日 ${hours}:${minutes}`
 }
 
-const secret = 'message'
-
 export const Form = () => {
   const [password, setPassword] = useState('')
   const [posts, setPosts] = useState(initialPosts)
@@ -65,24 +63,16 @@ export const Form = () => {
     displayName: '',
     dateTime: '',
     message: '',
+    password: '',
   })
-
-  const handlePassword = (e) => {
-    setPassword(e.target.value)
-  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    if (name === 'password') setPassword(value)
     setPost((prevPost) => ({ ...prevPost, [name]: value }))
   }
-
   const handleCreatePost = (e) => {
     e.preventDefault()
-    if (password !== secret) {
-      alert('あいことばが違います')
-      return
-    }
-
     if (post.displayName.trim() && post.message.trim()) {
       const newMessage = {
         ...post,
@@ -94,8 +84,8 @@ export const Form = () => {
         displayName: '',
         dateTime: '',
         message: '',
+        password: '',
       })
-      setPassword('')
     }
   }
 
@@ -141,15 +131,15 @@ export const Form = () => {
                   type='text'
                   id='password'
                   name='password'
-                  value={password}
-                  onChange={handlePassword}
+                  value={post.password}
+                  onChange={handleChange}
                 />
               </p>
             </div>
           </div>
         </form>
         <hr style={styles.hr} />
-        <Card posts={posts} updatePost={updatePost} />
+        <Card posts={posts} updatePost={updatePost} password={password} />
       </main>
     </div>
   )

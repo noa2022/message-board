@@ -45,7 +45,7 @@ const styles = {
   },
 }
 
-export const Card = ({ posts, updatePost }) => {
+export const Card = ({ posts, updatePost, password }) => {
   const [editMode, setEditMode] = useState(null)
   const [currentPost, setCurrentPost] = useState({})
 
@@ -55,9 +55,13 @@ export const Card = ({ posts, updatePost }) => {
   }
 
   const handleEdit = (id) => {
-    setEditMode(id)
     const postToEdit = posts.find((post) => post.id === id)
-    setCurrentPost(postToEdit)
+    if (postToEdit.password === password) {
+      setEditMode(id)
+      setCurrentPost(postToEdit)
+    } else {
+      alert('あいことばが間違っています。正しい合言葉を入力してください。')
+    }
   }
   const handleSave = (id) => {
     updatePost(id, currentPost)
