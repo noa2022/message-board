@@ -43,29 +43,42 @@ const styles = {
     border: '1px solid #cccccc',
     borderRadius: '3px',
   },
+  passwordInput: {
+    marginLeft: '3px',
+    width: '150px',
+    border: '1px solid #cccccc',
+    borderRadius: '3px',
+  },
 }
 
-export const Card = ({ posts, updatePost, password }) => {
+export const Card = ({ posts, updatePost }) => {
+  const [password, setPassword] = useState('')
   const [editMode, setEditMode] = useState(null)
   const [currentPost, setCurrentPost] = useState({})
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setCurrentPost((prev) => ({ ...prev, [name]: value }))
+    name === 'password'
+      ? setPassword(value)
+      : setCurrentPost((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleEdit = (id) => {
+    setPassword('')
+    setEditMode(id)
+    const postToEdit = posts.find((post) => post.id === id)
+    setCurrentPost(postToEdit)
+  }
+
+  const handleSave = (id) => {
     const postToEdit = posts.find((post) => post.id === id)
     if (postToEdit.password === password) {
-      setEditMode(id)
-      setCurrentPost(postToEdit)
+      updatePost(id, currentPost)
+      setPassword('')
+      setEditMode(null)
     } else {
       alert('あいことばが間違っています。正しい合言葉を入力してください。')
     }
-  }
-  const handleSave = (id) => {
-    updatePost(id, currentPost)
-    setEditMode(null)
   }
 
   return (
@@ -106,12 +119,23 @@ export const Card = ({ posts, updatePost, password }) => {
           )}
           <div style={styles.buttonContainer}>
             {editMode === item.id ? (
-              <button
-                style={styles.saveButton}
-                onClick={() => handleSave(item.id)}
-              >
-                保存
-              </button>
+              <>
+                あいことば
+                <input
+                  style={styles.passwordInput}
+                  type='text'
+                  id='password'
+                  name='password'
+                  value={password}
+                  onChange={handleChange}
+                />
+                <button
+                  style={styles.saveButton}
+                  onClick={() => handleSave(item.id)}
+                >
+                  保存
+                </button>
+              </>
             ) : (
               <button
                 style={styles.editButton}

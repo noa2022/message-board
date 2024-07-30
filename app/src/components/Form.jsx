@@ -57,7 +57,6 @@ const formartDateTime = (date) => {
 }
 
 export const Form = () => {
-  const [password, setPassword] = useState('')
   const [posts, setPosts] = useState(initialPosts)
   const [post, setPost] = useState({
     displayName: '',
@@ -68,9 +67,9 @@ export const Form = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    if (name === 'password') setPassword(value)
     setPost((prevPost) => ({ ...prevPost, [name]: value }))
   }
+
   const handleCreatePost = (e) => {
     e.preventDefault()
     if (post.displayName.trim() && post.message.trim()) {
@@ -139,7 +138,7 @@ export const Form = () => {
           </div>
         </form>
         <hr style={styles.hr} />
-        <Card posts={posts} updatePost={updatePost} password={password} />
+        <Card posts={posts} updatePost={updatePost} />
       </main>
     </div>
   )
