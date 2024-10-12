@@ -7,8 +7,6 @@ from database import SessionLocal, engine
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
-
 class CreateRequest(BaseModel):
     name: str
     message: str
